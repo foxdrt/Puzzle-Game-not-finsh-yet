@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GAME</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        place-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .options {
+        display: grid;
+        grid-template-rows: 7vw 7vw;
+        grid-template-columns: 18vw 18vw;
+        gap: 10px;
+      }
+      .btn {
+        border: none;
+        border-bottom: 0.2rem solid;
+        border-left: 0.2rem solid;
+        border-radius: 0.2rem;
+        transition: scale 0.3s ease;
+        color: rgb(42, 42, 42);
+        font-size: calc(1.2vw + 1.2vh);
+        padding-block: 0.5rem;
+        overflow-wrap: break-word;
+        white-space: normal;
+        width: auto;
+        text-wrap: wrap;
+      }
+      .A {
+        background-color: brown;
+        border-color: rgb(128, 35, 35);
+      }
+
+      .B {
+        background-color: blue;
+        border-color: rgb(35, 35, 128);
+      }
+
+      .C {
+        background-color: green;
+        border-color: rgb(35, 128, 35);
+      }
+
+      .D {
+        background-color: yellow;
+        border-color: rgb(128, 128, 35);
+      }
+      .btn:hover {
+        scale: 102%;
+      }
+      .btn:active {
+        scale: 99%;
+      }
+      .hidden {
+        display: none;
+      }
+      #Start {
+        width: 15vw;
+        height: 8vh;
+        padding: 4px;
+        background-color: rgb(255, 255, 116);
+        color: rgb(94, 169, 255);
+        border: none;
+        border-radius: 3px;
+        transition: all 0.4s ease-out;
+        font-size: 3vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+      }
+      #Start:hover {
+        background-color: rgb(94, 169, 255);
+        color: rgb(255, 255, 116);
+        scale: 101%;
+      }
+      #Start:active {
+        scale: 99%;
+      }
+      #question {
+        text-align: center;
+        font-size: calc(1vw + 1vh);
+        overflow-wrap: break-word;
+        text-wrap: wrap;
+      }
+      .image {
+        width: 50%;
+        height: 50%;
+        place-items: center;
+        margin-left: 9vw;
+      }
+      .gameEnd {
+        border: none;
+        border-radius: 0.2rem;
+        position: absolute;
+        align-items: left;
+        font-size: calc(1vw + 1vh);
+        width: calc(18vw + 18vh);
+        height: calc(15vw + 15vh);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: left;
+        background-color: blanchedalmond;
+      }
+      .timer {
+        font-size: calc(1vw + 1vh);
+        text-align: center;
+      }
+      .text {
+        margin-left: 1.5vw;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="Start">Start</button>
+    <div class="container hidden">
+      <h1 class="timer" id="timer">1:00</h1>
+      <h1 id="question">Q</h1>
+      <img id="img" class="image" src="" />
+      <div class="options">
+        <button class="btn A">A</button>
+        <button class="btn B">B</button>
+        <button class="btn C">C</button>
+        <button class="btn D">D</button>
+      </div>
+    </div>
+    <div class="gameEnd hidden" id="gameEndScreen">
+      <p id="rightAnswerScore" class="text">Right Answers:</p>
+      <p id="wrongAnswerScore" class="text">Wrong Answers:</p>
+      <p id="bestScore" class="text">Best Score:</p>
+      <button id="PlayAgain" class="text">Play Again ▶</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

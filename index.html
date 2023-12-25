@@ -1,13 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>GAME</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
     <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
-        place-items: center;
-        min-height: 100vh;
         margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .containerHome {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+      .Div {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.4s ease-in;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        height: 100%;
+      }
+      .Div:hover {
+        transform: scale(1.05);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333333;
+      }
+      p {
+        text-align: center;
+        color: #666666;
+      }
+      .input {
+        position: fixed;
+        left: 50%;
+        top: 30%;
+      }
+      .overflow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.313);
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(3px);
+      }
+      .Window {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(255, 255, 255);
+        width: 48vw;
+        height: 48vw;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .hidden {
+        display: none;
+      }
+      #closeBtn {
+        position: absolute;
+        right: 4%;
+        top: 1%;
+        font-size: calc(1.5vw + 1.5vh);
+        position: absolute;
+        background-color: #00000000;
+        border: none;
+        cursor: pointer;
+      }
+      .playbtn,
+      .PlayAgain {
+        width: 8vw;
+        height: 3vw;
+        font-size: 2vw;
+        border: solid black 2px;
+        transition: border 0.4s linear, background-color 0.4s linear;
+        border-radius: 1px;
+      }
+      .PlayAgain {
+        width: auto;
+        position: absolute;
+        right: 30%;
+      }
+      .playbtn:hover,
+      .PlayAgain:hover {
+        color: white;
+        background-color: black;
       }
       .container {
         position: absolute;
@@ -60,33 +148,7 @@
       .btn:active {
         scale: 99%;
       }
-      .hidden {
-        display: none;
-      }
-      #Start {
-        width: 15vw;
-        height: 8vh;
-        padding: 4px;
-        background-color: rgb(255, 255, 116);
-        color: rgb(94, 169, 255);
-        border: none;
-        border-radius: 3px;
-        transition: all 0.4s ease-out;
-        font-size: 3vw;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        cursor: pointer;
-      }
-      #Start:hover {
-        background-color: rgb(94, 169, 255);
-        color: rgb(255, 255, 116);
-        scale: 101%;
-      }
-      #Start:active {
-        scale: 99%;
-      }
+
       #question {
         text-align: center;
         font-size: calc(1vw + 1vh);
@@ -94,8 +156,7 @@
         text-wrap: wrap;
       }
       .image {
-        width: 50%;
-        height: 50%;
+        height: 10vw;
         place-items: center;
         margin-left: 9vw;
       }
@@ -111,7 +172,7 @@
         top: 50%;
         transform: translate(-50%, -50%);
         text-align: left;
-        background-color: blanchedalmond;
+        background-color: #ffffff;
       }
       .timer {
         font-size: calc(1vw + 1vh);
@@ -123,7 +184,48 @@
     </style>
   </head>
   <body>
-    <button id="Start">Start</button>
+    <div class="overflow hidden"></div>
+
+    <div class="containerHome">
+      <div class="Div">
+        <h1>Food</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Video Games</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>program</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Ai</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Moives</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Cars</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Football</h1>
+        <p>Description</p>
+      </div>
+      <div class="Div">
+        <h1>Anime</h1>
+        <p>Description</p>
+      </div>
+      <div class="Window hidden">
+        <h1 id="Topic">Topic</h1>
+        <p id="Description">Description</p>
+        <button class="playbtn" id="playbtn">Play</button>
+        <button id="closeBtn">X</button>
+      </div>
+    </div>
     <div class="container hidden">
       <h1 class="timer" id="timer">1:00</h1>
       <h1 id="question">Q</h1>
@@ -139,7 +241,7 @@
       <p id="rightAnswerScore" class="text">Right Answers:</p>
       <p id="wrongAnswerScore" class="text">Wrong Answers:</p>
       <p id="bestScore" class="text">Best Score:</p>
-      <button id="PlayAgain" class="text">Play Again ▶</button>
+      <button id="PlayAgain" class="text PlayAgain">Play Again ▶</button>
     </div>
     <script src="script.js"></script>
   </body>

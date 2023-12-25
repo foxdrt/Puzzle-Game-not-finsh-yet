@@ -1,3 +1,10 @@
+const div = document.querySelectorAll(".Div");
+const windowEl = document.querySelector(".Window");
+const topicEl = document.getElementById("Topic");
+const description = document.getElementById("Description");
+const overFlow = document.querySelector(".overflow");
+const closeBtn = document.getElementById("closeBtn");
+const playBtn = document.getElementById("playbtn");
 const A = document.querySelector(".A");
 const B = document.querySelector(".B");
 const C = document.querySelector(".C");
@@ -11,14 +18,24 @@ const timer = document.getElementById("timer");
 const container = document.querySelector(".container");
 const winScreen = document.getElementById("gameEndScreen");
 const startBtn = document.getElementById("Start");
-// scores
-let rightAnswerScore = 0;
-let wrongAnswerScore = 0;
-let bestScore = 0;
-const randomQ = function (arr) {
-  const randomIndex = Math.trunc(Math.random() * arr.length);
-  return arr[randomIndex];
-};
+const playAgainBtn = document.getElementById("PlayAgain");
+const containerHome = document.querySelector(".containerHome");
+const topicname = ["Cars", "Anime"];
+const questionFunction = [Cars, AnimeQuestion];
+let min, sc, rightAnswerScore, wrongAnswerScore, bestScore;
+
+function replay() {
+  min = 1;
+  sc = 59;
+  rightAnswerScore = 0;
+  wrongAnswerScore = 0;
+  bestScore = 0;
+  containerHome.classList.remove("hidden");
+  winScreen.classList.add("hidden");
+  container.classList.add("hidden");
+}
+replay();
+
 function showText(Aq, Bq, Cq, Dq, Q, img) {
   A.textContent = Aq;
   B.textContent = Bq;
@@ -32,21 +49,21 @@ function showText(Aq, Bq, Cq, Dq, Q, img) {
     imageEl.src = "";
     imageEl.classList.add("hidden");
   }
+  console.log("updated");
 }
 function whenWin() {
-  winScreen.classList.toggle("hidden");
+  winScreen.classList.remove("hidden");
   rightAnswerEl.textContent = `Right Answers:${rightAnswerScore}`;
   wrongAnswerEl.textContent = `Wrong Answers:${wrongAnswerScore}`;
   if (rightAnswerScore > bestScore) {
+    bestScore = rightAnswerScore;
     bestScoreEl.textContent = `Best Score:${rightAnswerScore}`;
   }
 }
-let min = 2;
-let sc = 59;
-function updateTimer() {
-  let string = `${String(min).padStart(2, "0")}:${String(sc).padStart(2, "0")}`;
-  timer.textContent = string;
 
+function updateTimer() {
+  let string = `0${min}:${sc}`;
+  timer.textContent = string;
   if (sc > 0) {
     sc--;
   } else {
@@ -54,257 +71,367 @@ function updateTimer() {
       sc = 59;
       min--;
     } else {
-      // Two minutes have passed, call whenWin
       whenWin();
       return;
     }
   }
-
-  // Schedule the next update after 1 second
   setTimeout(updateTimer, 1000);
 }
 
-// Start the timer update
-updateTimer();
-const questions = [
-  {
-    Questions: "ما هو نظام التشغيل الأكثر استخدامًا في العالم حاليًا؟",
-    A: "أ) Windows",
-    B: "ب) Linux",
-    C: "ج) macOS",
-    D: "د) Android",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ماذا يعني اختصار CPU في علم الحاسوب؟",
-    A: "أ) Central Processing Unit",
-    B: "ب) Computer Processing Unit",
-    C: "ج) Central Processor Unit",
-    D: "د) Central Peripheral Unit",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو HTML اختصارًا لـ؟",
-    A: "أ) HyperText Markup Language",
-    B: "ب) HyperTransfer Text Language",
-    C: "ج) HighText Machine Language",
-    D: "د) HyperText Mainframe Language",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو اختصار CSS في تطوير الويب؟",
-    A: "أ) Creative Style Sheets",
-    B: "ب) Computer Style Sheets",
-    C: "ج) Colorful Style Sheets",
-    D: "د) Cascading Style Sheets",
-    rightanswer: "D",
-  },
-  {
-    Questions: "من هو مؤسس شركة Apple؟",
-    A: "أ) Bill Gates",
-    B: "ب) Steve Jobs",
-    C: "ج) Mark Zuckerberg",
-    D: "د) Jeff Bezos",
-    rightanswer: "B",
-  },
-  {
-    Questions: "ما هو اختصار API في علم الحاسوب؟",
-    A: "أ) Application Programming Interface",
-    B: "ب) Advanced Programming Interface",
-    C: "ج) Application Process Integration",
-    D: "د) Automated Programming Interface",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو لغة البرمجة التي تستخدم لتطوير تطبيقات Android؟",
-    A: "أ) Java",
-    B: "ب) Swift",
-    C: "ج) C++",
-    D: "د) Kotlin",
-    rightanswer: "A",
-  },
-  {
-    Questions:
-      "ما هي تقنية الذكاء الاصطناعي التي تسمح للأنظمة بتعلم بدون تدخل بشري؟",
-    A: "أ) Machine Learning",
-    B: "ب) Deep Learning",
-    C: "ج) Artificial Intelligence",
-    D: "د) Neural Networks",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هي وحدة قياس سرعة المعالج؟",
-    A: "أ) Hertz",
-    B: "ب) Byte",
-    C: "ج) Watt",
-    D: "د) Volt",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو اختصار URL في علم الحوسبة؟",
-    A: "أ) Universal Resource Locator",
-    B: "ب) Uniform Resource Locator",
-    C: "ج) Unified Resource Locator",
-    D: "د) Universal Retrieval Locator",
-    rightanswer: "B",
-  },
-  {
-    Questions: "ما هو اسم لغة برمجة تستخدم أساسًا في تطوير تطبيقات الويب؟",
-    A: "أ) Python",
-    B: "ب) Ruby",
-    C: "ج) PHP",
-    D: "د) Objective-C",
-    rightanswer: "C",
-  },
-  {
-    Questions: "ما هو اسم الجيل الخامس من شبكات الاتصال اللاسلكية؟",
-    A: "أ) 4G",
-    B: "ب) 3G",
-    C: "ج) 5G",
-    D: "د) 2G",
-    rightanswer: "C",
-  },
-  {
-    Questions: "ما هو اختصار SQL في علم الحوسبة؟",
-    A: "أ) Structured Language",
-    B: "ب) Simple Language",
-    C: "ج) Systematic Language",
-    D: "د) Structured Query Language",
-    rightanswer: "D",
-  },
-  {
-    Questions: "ما هو اختصار GUI في علم الحوسبة؟",
-    A: "أ) Graphical User Interface",
-    B: "ب) General User Interface",
-    C: "ج) Geographical User Interface",
-    D: "د) General User Integration",
-    rightanswer: "A",
-  },
-  {
-    Questions: "من هو مؤسس Facebook؟",
-    A: "أ) Bill Gates",
-    B: "ب) Steve Jobs",
-    C: "ج) Mark Zuckerberg",
-    D: "د) Jeff Bezos",
-    rightanswer: "C",
-  },
-  {
-    Questions: "ما هو اسم أحد أشهر محركات البحث على الإنترنت؟",
-    A: "أ) Yahoo",
-    B: "ب) Bing",
-    C: "ج) DuckDuckGo",
-    D: "د) Baidu",
-    rightanswer: "B",
-  },
-  {
-    Questions: "ما هي لغة البرمجة التي تستخدم لتطوير تطبيقات iOS؟",
-    A: "أ) Java",
-    B: "ب) Swift",
-    C: "ج) C++",
-    D: "د) Kotlin",
-    rightanswer: "B",
-  },
-  {
-    Questions: "ما هو اسم لغة برمجة تم تطويرها بواسطة شركة Google؟",
-    A: "أ) Java",
-    B: "ب) Swift",
-    C: "ج) Go",
-    D: "د) Kotlin",
-    rightanswer: "C",
-  },
-  {
-    Questions: "ما هو اختصار IDE في تطوير البرمجيات؟",
-    A: "أ) Integrated Development Environment",
-    B: "ب) Intelligent Design Environment",
-    C: "ج) Interactive Development Environment",
-    D: "د) Integrated Deployment Environment",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هي تقنية الواقع الافتراضي؟",
-    A: "أ) Virtual Reality",
-    B: "ب) Augmented Reality",
-    C: "ج) Mixed Reality",
-    D: "د) Artificial Reality",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو اختصار VPN في علم الحاسوب؟",
-    A: "أ) Virtual Personal Network",
-    B: "ب) Very Private Network",
-    C: "ج) Virtual Private Network",
-    D: "د) Verified Personal Network",
-    rightanswer: "C",
-  },
-  {
-    Questions: "ما هو تقنية Blockchain تقريبًا مرتبطة بها؟",
-    A: "أ) Cryptocurrency",
-    B: "ب) Machine Learning",
-    C: "ج) Virtual Reality",
-    D: "د) Artificial Intelligence",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو مفهوم 'الإنترنت of Things'؟",
-    A: "أ) توصيل الأشياء بالإنترنت",
-    B: "ب) إنترنت الأشياء",
-    C: "ج) تطوير الأشياء على الإنترنت",
-    D: "د) إنشاء الأشياء باستخدام الإنترنت",
-    rightanswer: "B",
-  },
-  {
-    Questions: "ما هو اختصار API في علم الحاسوب؟",
-    A: "أ) Application Programming Interface",
-    B: "ب) Advanced Programming Interface",
-    C: "ج) Application Process Integration",
-    D: "د) Automated Programming Interface",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هي تقنية 5G في الاتصالات اللاسلكية؟",
-    A: "أ) 5th Generation",
-    B: "ب) 5 Gigahertz",
-    C: "ج) 5 Global",
-    D: "د) 5 Grid",
-    rightanswer: "A",
-  },
-  {
-    Questions:
-      "ما هي لغة البرمجة التي تُستخدم بشكل رئيسي في تطوير تطبيقات Google Android؟",
-    A: "أ) Java",
-    B: "ب) Swift",
-    C: "ج) Kotlin",
-    D: "د) C#",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هو مفهوم 'Big Data'؟",
-    A: "أ) مجموعة كبيرة من البيانات",
-    B: "ب) تحليل البيانات الكبيرة",
-    C: "ج) تخزين البيانات بشكل كبير",
-    D: "د) إدارة البيانات بشكل كبير",
-    rightanswer: "A",
-  },
-  {
-    Questions: "ما هي لغة البرمجة التي تم إطلاقها بواسطة Facebook؟",
-    A: "أ) Python",
-    B: "ب) Ruby",
-    C: "ج) PHP",
-    D: "د) Hack",
-    rightanswer: "D",
-  },
-  {
-    Questions: "ما هي تقنية الطباعة ثلاثية الأبعاد؟",
-    A: "أ) 2D Printing",
-    B: "ب) 4D Printing",
-    C: "ج) 3D Printing",
-    D: "د) 1D Printing",
-    rightanswer: "C",
-  },
-];
+for (let i = 0; i < div.length; i++) {
+  div[i].addEventListener("click", function (event) {
+    if (event.target === div[i]) {
+      windowEl.classList.remove("hidden");
+      topicEl.textContent = event.target.children[0].innerHTML;
+      overFlow.classList.remove("hidden");
 
+      if (topicname.indexOf(event.target.children[0].innerHTML) !== -1) {
+        console.log(
+          questionFunction[
+            topicname.indexOf(event.target.children[0].innerHTML)
+          ]()
+        );
+      } else {
+        console.log(-1);
+      }
+    }
+  });
+}
+
+function randomQuestion(arr) {
+  const randomIndex = Math.trunc(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+function Cars() {
+  const questions = [
+    {
+      Questions: "ما هو الجزء الرئيسي لنظام الدفع في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) العجلات",
+      C: "ج) الكراسي",
+      D: "د) المصابيح الأمامية",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هي الشركة المصنعة للسيارات الفاخرة 'رولز رويس'؟",
+      A: "أ) تويوتا",
+      B: "ب) فورد",
+      C: "ج) بي إم دبليو",
+      D: "د) فيات",
+      rightanswer: "C",
+    },
+    {
+      Questions: "ما هو العنصر الذي يحول الوقود إلى طاقة في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) العجلات",
+      D: "د) الكراسي",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هي الشركة التي تنتج السيارة الرياضية '911'؟",
+      A: "أ) بورش",
+      B: "ب) مرسيدس بنز",
+      C: "ج) أودي",
+      D: "د) لامبورغيني",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو العنصر الذي يساعد في تقليل الاحتكاك داخل المحرك؟",
+      A: "أ) الزيت",
+      B: "ب) الوقود",
+      C: "ج) الماء",
+      D: "د) الهواء",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هي الشركة التي تنتج السيارة الرياضية 'GT-R'؟",
+      A: "أ) تويوتا",
+      B: "ب) نيسان",
+      C: "ج) هوندا",
+      D: "د) مازدا",
+      rightanswer: "B",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الحركة الدورانية للمحرك إلى حركة خطية في السيارة؟",
+      A: "أ) العمود المرفقي",
+      B: "ب) العمود الكامن",
+      C: "ج) البستم",
+      D: "د) الكرنك",
+      rightanswer: "A",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الحركة الخطية إلى حركة دورانية في السيارة؟",
+      A: "أ) العمود المرفقي",
+      B: "ب) العمود الكامن",
+      C: "ج) البستم",
+      D: "د) الكرنك",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الجزء الذي يقوم بتوفير الهواء للمحرك في السيارة؟",
+      A: "أ) فلتر الهواء",
+      B: "ب) البطارية",
+      C: "ج) العجلات",
+      D: "د) المصابيح الأمامية",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الجزء الذي يقوم بتوفير الوقود للمحرك في السيارة؟",
+      A: "أ) البطارية",
+      B: "ب) المحرك",
+      C: "ج) العجلات",
+      D: "د) خزان الوقود",
+      rightanswer: "D",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الكهربائية إلى طاقة ميكانيكية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) المولد",
+      D: "د) الكراسي",
+      rightanswer: "C",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الميكانيكية إلى طاقة كهربائية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) المولد",
+      D: "د) الكراسي",
+      rightanswer: "C",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الكهربائية إلى طاقة حرارية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) المولد",
+      D: "د) المكيف",
+      rightanswer: "D",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الحرارية إلى طاقة كهربائية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) المولد",
+      D: "د) الكراسي",
+      rightanswer: "C",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الكهربائية إلى طاقة صوتية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) المولد",
+      D: "د) السماعات",
+      rightanswer: "D",
+    },
+    {
+      Questions:
+        "ما هو الجزء الذي يقوم بتحويل الطاقة الصوتية إلى طاقة كهربائية في السيارة؟",
+      A: "أ) المحرك",
+      B: "ب) البطارية",
+      C: "ج) الميكروفون",
+      D: "د) الكراسي",
+      rightanswer: "C",
+    },
+  ];
+  return randomQuestion(questions);
+}
+function AnimeQuestion() {
+  const questions = [
+    {
+      Questions: "ما هو الأنمي الذي يتميز بوجود الشينيغامي؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) ون بيس",
+      D: "د) دراغون بول",
+      rightanswer: "B",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'هجوم العمالقة'؟",
+      A: "أ) إيرين ييغر",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن القراصنة والبحث عن كنز ون بيس؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) ون بيس",
+      D: "د) دراغون بول",
+      rightanswer: "C",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن النينجا والتقنيات الخاصة؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) ون بيس",
+      D: "د) دراغون بول",
+      rightanswer: "A",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'ون بنش مان'؟",
+      A: "أ) سايتاما",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن السايانز والكي؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) ون بيس",
+      D: "د) دراغون بول",
+      rightanswer: "D",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'فيري تيل'؟",
+      A: "أ) ناتسو دراغنيل",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن الألكيمياء والفلسفة؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) الخيميائي الفولاذي",
+      D: "د) دراغون بول",
+      rightanswer: "C",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'ديث نوت'؟",
+      A: "أ) لايت ياغامي",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'كود غياس'؟",
+      A: "أ) ليلوش لامبيروج",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن الروبوتات العملاقة؟",
+      A: "أ) ناروتو",
+      B: "ب) بليتش",
+      C: "ج) نيون جينيسيس إيفانجيليون",
+      D: "د) دراغون بول",
+      rightanswer: "C",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'كاوبوي بيبوب'؟",
+      A: "أ) سبايك سبيجل",
+      B: "ب) ناروتو أوزوماكي",
+      C: "ج) لوفي",
+      D: "د) غوكو",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن مغامرات في الفضاء الخارجي؟",
+      A: "أ) ستينز؛ غيت",
+      B: "ب) كاوبوي بيبوب",
+      C: "ج) هايكيو",
+      D: "د) أتاك أون تايتن",
+      rightanswer: "B",
+    },
+    {
+      Questions: "ما هو الأنمي الذي يتضمن الكرة الطائرة؟",
+      A: "أ) ستينز؛ غيت",
+      B: "ب) كاوبوي بيبوب",
+      C: "ج) هايكيو",
+      D: "د) أتاك أون تايتن",
+      rightanswer: "C",
+    },
+    {
+      Questions: "من هو الشخصية الرئيسية في أنمي 'ستينز؛ غيت'؟",
+      A: "أ) رينتارو أوكابي",
+      B: "ب) سبايك سبيجل",
+      C: "ج) شويو هيناتا",
+      D: "د) إيرين ييغر",
+      rightanswer: "A",
+    },
+    {
+      Questions: "ما اسم هذا الشخصيه",
+      A: "أ) توني تشوبر",
+      B: "ب) سبايك سبيجل",
+      C: "ج) جينبي",
+      D: "د) سابو ",
+      Img: "https://www.crunchyroll.com/imgsrv/display/thumbnail/640x360/catalog/crunchyroll/2c1c983100e7df5b55e16d6541291ab2.jpe",
+      rightanswer: "C",
+    },
+    {
+      Questions: "ما اسم هذا الشخصيه",
+      A: "أ) كافنديش ",
+      B: "ب) دوفلامنغو",
+      C: "ج) جينبي",
+      D: "د) سيلفر رايلي",
+      Img: "https://pm1.aminoapps.com/6676/6f24789f65aad717d7b16915d1ffe002a6c2ae36_hq.jpg",
+      rightanswer: "B",
+    },
+  ];
+
+  return randomQuestion(questions);
+}
+playBtn.addEventListener("click", (event) => {
+  container.classList.remove("hidden");
+  containerHome.classList.add("hidden");
+  windowEl.classList.add("hidden");
+  overFlow.classList.add("hidden");
+  const parent = event.target.parentNode.children[0].innerHTML;
+
+  if (topicname.indexOf(parent) !== -1) {
+    var startQ = questionFunction[topicname.indexOf(parent)]();
+    showText(startQ.A, startQ.B, startQ.C, startQ.D, startQ.Questions);
+    if (
+      startQ.rightanswer === event.target.classList[1] &&
+      event.target !== playBtn
+    ) {
+      rightAnswerScore++;
+      rightAnswerEl.textContent = `Right Answers:${rightAnswerScore}`;
+      console.log(
+        event.target.classList[1],
+        startQ.rightanswer,
+        startQ,
+        event.target
+      );
+    } else {
+      if (event.target !== playBtn) {
+        wrongAnswerScore++;
+        wrongAnswerEl.textContent = `Wrong Answers:${wrongAnswerScore}`;
+        console.log(
+          event.target.classList[1],
+          startQ.rightanswer,
+          startQ,
+          event.target
+        );
+      }
+    }
+    updateTimer();
+  }
+});
+closeBtn.addEventListener("click", () => {
+  overFlow.classList.toggle("hidden");
+  windowEl.classList.toggle("hidden");
+});
 function game(event) {
-  let question = randomQ(questions);
+  const parent = windowEl.children[0].innerHTML;
+  const question = questionFunction[topicname.indexOf(parent)]();
+
   showText(
     question.A,
     question.B,
@@ -313,57 +440,18 @@ function game(event) {
     question.Questions,
     question.Img
   );
-  if (event.target !== startBtn) {
+
+  if (event.target !== playBtn) {
     if (question.rightanswer === event.target.classList[1]) {
       rightAnswerScore++;
-      console.log(
-        event.target.classList[1],
-        question.rightanswer,
-        question,
-        event.target
-      );
     } else {
       wrongAnswerScore++;
-      console.log(
-        event.target.classList[1],
-        question.rightanswer,
-        question,
-        event.target
-      );
     }
   }
 }
+
 A.addEventListener("click", game);
 B.addEventListener("click", game);
 C.addEventListener("click", game);
 D.addEventListener("click", game);
-startBtn.addEventListener("click", (event) => {
-  container.classList.toggle("hidden");
-  startBtn.classList.add("hidden");
-  const startQ = randomQ(questions);
-  showText(startQ.A, startQ.B, startQ.C, startQ.D, startQ.Questions);
-  if (
-    startQ.rightanswer === event.target.classList[1] &&
-    event.target !== startBtn
-  ) {
-    rightAnswerScore++;
-    rightAnswerEl.textContent = `Right Answers:${rightAnswerScore}`;
-    console.log(
-      event.target.classList[1],
-      startQ.rightanswer,
-      startQ,
-      event.target
-    );
-  } else {
-    if (event.target !== startBtn) {
-      wrongAnswerScore++;
-      wrongAnswerEl.textContent = `Wrong Answers:${wrongAnswerScore}`;
-      console.log(
-        event.target.classList[1],
-        startQ.rightanswer,
-        startQ,
-        event.target
-      );
-    }
-  }
-});
+playAgainBtn.addEventListener("click", replay);
